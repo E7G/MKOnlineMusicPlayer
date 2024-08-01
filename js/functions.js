@@ -30,10 +30,11 @@ var isMobile = {
 // 初始化layui
 var layer;
 var form;
+var playedcard = sessionStorage['playedcard'] || '';
 layui.use(['layer', 'form'], function(){
     layer = layui.layer;
     form = layui.form;
-    if (mkPlayer.placard) {
+    if (mkPlayer.placard && !playedcard ) {
         layer.config({
             shade: [0.25,'#000'],
             shadeClose: true
@@ -47,8 +48,47 @@ layui.use(['layer', 'form'], function(){
                 content: $('#layer-placard-box').html()
             });
         };
+        sessionStorage['playedcard']=true;
     }
 });
+
+//一个调节墨水屏模式的开关
+function switchInkTheme(){
+    function removejscssfile(filename, filetype){
+        var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none"
+        var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none"
+        var allsuspects=document.getElementsByTagName(targetelement)
+        for (var i=allsuspects.length; i>=0; i--){
+        if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1)
+           allsuspects[i].parentNode.removeChild(allsuspects[i])
+        }
+    }
+    function loadStyle(url) {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = url;
+        var head = document.getElementsByTagName("head")[0];
+        head.appendChild(link);
+    }
+    
+    mkPlayer.ink_theme=!mkPlayer.ink_theme;
+    if(mkPlayer.ink_theme){
+    $('#music-cover')[0].src='images/ink-theme/player_cover.png';
+    removejscssfile('css/player.css','css');
+    loadStyle("css/player-ink.css");
+    }else{
+    $('#music-cover')[0].src='images/player_cover.png';
+    removejscssfile("css/player-ink.css",'css');
+    loadStyle('css/player.css');
+    }
+}
+
+if(mkPlayer.ink_theme){
+    mkPlayer.ink_theme=!mkPlayer.ink_theme;
+    switchInkTheme();
+}
+
 
 $(function(){
     if(mkPlayer.debug) {
@@ -69,8 +109,8 @@ $(function(){
 
     initProgress();     // 初始化音量条、进度条（进度条初始化要在 Audio 前，别问我为什么……）
     initAudio();    // 初始化 audio 标签，事件绑定
-    
-    
+
+
     if(rem.isMobile) {  // 加了滚动条插件和没加滚动条插件所操作的对象是不一样的
         rem.sheetList = $("#sheet");
         rem.mainList = $("#main-list");
@@ -332,7 +372,11 @@ $(function(){
     
     // 图片加载失败处理
     $('img').error(function(){
-        $(this).attr('src', 'images/player_cover.png');
+        if(mkPlayer.ink_theme){
+            $(this).attr('src', 'images/ink-theme/player_cover.png');
+        }else{
+            $(this).attr('src', 'images/player_cover.png');
+        }
     });
     
     setInterval(function () {
@@ -468,6 +512,10 @@ function comments(obj) {
             }
             if (obj.source === 'netease') {
                 $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
+            } else if (obj.source === 'litemic') {
+                $(".banner_text a").attr("href", "https://kuwo.cn/play_detail/"+obj.id);
+            } else if (obj.source === 'kuwo') {
+                $(".banner_text a").attr("href", "https://kuwo.cn/play_detail/"+obj.id);
             } else if (obj.source === 'kugou') {
                 $(".banner_text a").attr("href", "https://www.kugou.com/song/#hash="+obj.id);
             } else if (obj.source === 'tencent') {
@@ -692,7 +740,12 @@ function changeCover(music) {
     }
     
     if(img == "err") {
-        img = "images/player_cover.png";
+        if(mkPlayer.ink_theme){
+            img = "images/ink-theme/player_cover.png";
+        }else{
+            img = "images/player_cover.png";
+        }
+        
     } else {
         if(mkPlayer.mcoverbg === true && rem.isMobile)      // 移动端封面
         {    
@@ -921,7 +974,13 @@ function refreshList() {
 // 添加一个歌单
 // 参数：编号、歌单名字、歌单封面
 function addSheet(no, name, cover) {
-    if(!cover) cover = "images/player_cover.png";
+    if(!cover) {
+        if(mkPlayer.ink_theme){
+            cover = "images/ink-theme/player_cover.png";
+        }else{
+            cover = "images/player_cover.png";
+        }
+    }
     if(!name) name = "读取中...";
     
     var html = '<div class="sheet-item" data-no="' + no + '">' +
@@ -1145,7 +1204,12 @@ function clearDislist() {
     musicList[rem.dislist].item.length = 0;  // 清空内容
     if(rem.dislist == 1) {  // 正在播放列表
         playerSavedata('playing', '');  // 清空本地记录
-        $(".sheet-item[data-no='1'] .sheet-cover").attr('src', 'images/player_cover.png');    // 恢复正在播放的封面
+        if(mkPlayer.ink_theme){
+            $(".sheet-item[data-no='1'] .sheet-cover").attr('src', 'images/ink-theme/player_cover.png');    // 恢复正在播放的封面
+        }else{
+            $(".sheet-item[data-no='1'] .sheet-cover").attr('src', 'images/player_cover.png');    // 恢复正在播放的封面
+        }
+        
     } else if(rem.dislist == 2) {   // 播放记录
         playerSavedata('his', '');  // 清空本地记录
     //收藏功能添加
