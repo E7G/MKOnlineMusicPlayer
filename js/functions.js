@@ -74,11 +74,15 @@ function switchInkTheme(){
     
     mkPlayer.ink_theme=!mkPlayer.ink_theme;
     if(mkPlayer.ink_theme){
-    $('#music-cover')[0].src='images/ink-theme/player_cover.png';
+    if($('#music-cover')[0].src=='images/player_cover.png') {
+        $('#music-cover')[0].src='images/ink-theme/player_cover.png';
+    }
     removejscssfile('css/player.css','css');
     loadStyle("css/player-ink.css");
     }else{
+    if($('#music-cover')[0].src=='images/ink-theme/player_cover.png') {
     $('#music-cover')[0].src='images/player_cover.png';
+    }
     removejscssfile("css/player-ink.css",'css');
     loadStyle('css/player.css');
     }
@@ -87,6 +91,7 @@ function switchInkTheme(){
 if(mkPlayer.ink_theme){
     mkPlayer.ink_theme=!mkPlayer.ink_theme;
     switchInkTheme();
+    $('#music-cover')[0].src='images/ink-theme/player_cover.png';
 }
 
 
