@@ -19,9 +19,9 @@
     <meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
     <meta name="x5-page-mode" content="app"><!--QQ应用模式-->
 
-    <title>MxuePlayer-茗血在线听歌房|收费歌曲在线下载|MKOnlinePlayer</title>
-    <meta name="description" content="MxuePlay是一个以H5 + JavaScript + php为基础开发的在线听歌房，原作者孟坤（MK），除了可以在线听歌，还可以免费下载各大音乐网站的收费歌曲，欢迎各位音乐爱好者前来体验。"/>
-    <meta name="keywords" content="MKOnlinePlayer,MxuePlay,在线听歌房,热门歌曲下载,茗血听歌房,网易云音乐免费下载,QQ音乐免费下载,酷狗音乐免费下载"/>
+    <title>litemic-mkPlayer-litemic在线听歌|收费歌曲在线下载|MKOnlinePlayer</title>
+    <meta name="description" content="litemic-mkplayer是一个基于MxuePlay，以H5 + JavaScript + php为基础开发的在线听歌房，原作者孟坤（MK），除了可以在线听歌，还可以免费下载各大音乐网站的收费歌曲，欢迎各位音乐爱好者前来体验。"/>
+    <meta name="keywords" content="MKOnlinePlayer,MxuePlay,litemic-mkplayer,在线听歌房,热门歌曲下载,网易云音乐免费下载,QQ音乐免费下载,酷狗音乐免费下载"/>
 
     <!-- 不支持IE8及以下版本浏览器 -->
     <!--[if lte IE 8]>
@@ -167,6 +167,7 @@
 <script src="js/background-blur.min.js"></script>
 
 <!-- 自定义js -->
+<!--
 <script>
     $(function () {
         (function () {
@@ -180,6 +181,7 @@
         })();
     });
 </script>
+-->
 
 <!-- 搜索弹窗 -->
 <script type="text/html" id="layer-form-box">
@@ -189,7 +191,7 @@
                 <input type="text" name="wd" id="search-wd" required  lay-verify="required" placeholder="搜索歌手、歌名、专辑" autocomplete="on" class="layui-input">
                 <button class="layui-btn" lay-submit type="submit">搜 索</button>
             </div>
-            <!--div class="source-radio" id="music-source">
+            <div class="source-radio" id="music-source">
                 <label><input type="radio" name="source" value="netease" checked title="网易云"></label>
                 <label><input type="radio" name="source" value="kugou" title="酷狗"></label>
                 <label><input type="radio" name="source" value="tencent" title="QQ"></label>
@@ -197,7 +199,7 @@
                 <label><input type="radio" name="source" value="xiami" title="虾米" disabled></label>
                 <div hidden>end</div>
                 <label><input type="radio" name="source" value="baidu" title="百度"></label>
-            </div-->
+            </div>
         </form>
     </div>
 </script>
